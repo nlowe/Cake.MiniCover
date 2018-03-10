@@ -96,8 +96,10 @@ Task("Publish")
     .Does(() => 
 {
     var apiKey = Argument<string>("NugetApiKey");
-    NuGetPush(GetFiles("./_dist/Cake.MiniCover*.nupkg").FirstOrDefault(), new NuGetPushSettings
+    var feed = Argument("NugetFeed", "https://api.nuget.org/v3/index.json");
+    DotNetCoreNuGetPush("./_dist/Cake.MiniCover*.nupkg", new DotNetCoreNuGetPushSettings
     {
+        Source = feed,
         ApiKey = apiKey
     });
 });
