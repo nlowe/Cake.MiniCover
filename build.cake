@@ -99,7 +99,7 @@ Task("Publish")
     NuGetPush(GetFiles("./_dist/Cake.MiniCover*.nuget").FirstOrDefault(), new NuGetPushSettings
     {
         ApiKey = apiKey
-    })
+    });
 });
 
 //////////////////////////////////////////////////////////////////////
