@@ -1,11 +1,8 @@
-#addin "nuget:?package=Cake.Codecov&version=0.3.0"
-#tool "nuget:?package=Codecov&version=1.0.3"
-
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
 
-const string SOLUTION = "./Cake.Minicover.sln";
+const string SOLUTION = "./Cake.MiniCover.sln";
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -29,9 +26,9 @@ Task("Clean::Dist")
 Task("Clean::Test")
     .Does(() => 
 {
-    if(DirectoryExists("_tests"))
+    if(DirectoryExists("./test/_addin"))
     {
-        DeleteDirectory("_tests", new DeleteDirectorySettings
+        DeleteDirectory("./test/_addin", new DeleteDirectorySettings
         {
             Recursive = true
         });
@@ -54,7 +51,6 @@ Task("Restore")
 
 Task("Build")
     .IsDependentOn("Restore")
-    .IsDependentOn("Bundle")
     .Does(() =>
 {
     DotNetCoreBuild(SOLUTION, new DotNetCoreBuildSettings {
@@ -67,10 +63,12 @@ Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    foreach(var project in GetFiles("./test/**/*.csproj"))
+    EnsureDirectoryExists("./test/_addin");
+    CopyFiles($"./src/Cake.MiniCover/bin/{configuration}/netstandard2.0/Cake.MiniCover.*", "./test/_addin");
+    CakeExecuteScript("./test/integration-tests.cake", new CakeSettings
     {
-        TestProject(project);
-    }
+        Verbosity = Verbosity.Diagnostic
+    });
 });
 
 Task("Dist")
@@ -78,13 +76,13 @@ Task("Dist")
     .IsDependentOn("Test")
     .Does(() => 
 {
-});
-
-Task("CodeCov::Publish")
-    .IsDependentOn("Test")
-    .Does(() =>
-{
-    Codecov("./_tests/coverage.xml");
+    EnsureDirectoryExists("./_dist");
+    DotNetCorePack("./src/Cake.MiniCover/Cake.MiniCover.csproj", new DotNetCorePackSettings
+    {
+        Configuration = configuration,
+        NoRestore = true,
+        OutputDirectory = "./_dist"
+    });
 });
 
 //////////////////////////////////////////////////////////////////////

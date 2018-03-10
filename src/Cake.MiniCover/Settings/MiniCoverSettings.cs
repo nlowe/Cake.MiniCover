@@ -1,18 +1,21 @@
 ﻿using System.Collections.Generic;
 using Cake.Common.Tools.DotNetCore;
+using Cake.Core.IO;
 
-namespace Cake.Minicover
+namespace Cake.MiniCover.Settings
 {
     /// <summary>
     /// Contains settings used by <see cref="MiniCoverRunner"/>.
     /// </summary>
     public sealed class MiniCoverSettings : DotNetCoreSettings
     {
+        internal static string MiniCoverToolsProject = null;
+        
         /// <summary>
         /// Pattern to include assemblies
         /// </summary>
         public ISet<string> AssemblyIncludePatterns { get; } = new HashSet<string>();
-
+        
         /// <summary>
         /// Pattern to exclude assemblies
         /// </summary>
@@ -52,5 +55,15 @@ namespace Cake.Minicover
         /// Coverage percentage below which the build will fail
         /// </summary>
         public float FailureThreshold { get; set; } = 90.0f;
+
+        /// <summary>
+        /// If true, threshold is set for reporting only and will not fail the build
+        /// </summary>
+        public bool NonFatalThreshold { get; set; } = false;
+
+        /// <summary>
+        /// The working directory for minicover (corresponds to the --workdir option)
+        /// </summary>
+        public DirectoryPath MiniCoverWorkingDirectory {get; set;} = "../";        
     }
 }

@@ -2,14 +2,15 @@
 
 A [Cake](https://cakebuild.net) addin for [MiniCover](https://github.com/lucaslorentz/minicover)
 
-> ***WIP***: None of this actually works at the moment due to how `MiniCover` is packaged.
->
-> Track [lucaslorentz/minicover#31](https://github.com/lucaslorentz/minicover/issues/31) for details
-
 ## Usage
+
+Until [lucaslorentz/minicover#31](https://github.com/lucaslorentz/minicover/issues/31) is
+resolved, you need to call the `SetMiniCoverToolsProject` alias to locate the tools project:
 
 ```csharp
 #addin "Cake.MiniCover"
+
+SetMiniCoverToolsProject("./minicover/minicover.csproj");
 
 // ...
 
@@ -38,6 +39,36 @@ Task("Coverage")
 
 // ...
 
+```
+
+If you need more fine-graned control or have multiple test targets, you can call the aliases individually:
+
+```csharp
+#addin "Cake.MiniCover"
+
+SetMiniCoverToolsProject("./minicover/minicover.csproj");
+
+// ...
+
+Task("Test::Prepare")
+    .Does(() => 
+{
+    MiniCoverInstrument(
+        new MiniCoverSettings()
+            .WithAssembliesMatching("./test/**/*.dll")
+            .WithSourcesMatching("./src/**/*.cs")
+    );
+    MiniCoverReset();
+});
+
+Task("Test")
+    .IsDependentOn("Test::Prepare")
+    .Does(() => 
+{
+    DotNetCoreTest(...);
+    MiniCoverUninstrument();
+    MiniCoverReport(new MiniCoverSettings().GenerateReport(ReportType.CONSOLE | ReportType.XML));
+})
 ```
 
 ## License

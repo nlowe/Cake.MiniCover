@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
+using Cake.Core.IO;
+using Cake.MiniCover.Settings;
 
-namespace Cake.Minicover
+namespace Cake.MiniCover.Settings
 {
     /// <summary>
     /// Contains extensions for <see cref="MiniCoverSettings"/>.
@@ -134,6 +137,40 @@ namespace Cake.Minicover
         }
 
         /// <summary>
+        /// Do not fail the build if coverage is below the threshold
+        /// </summary>
+        /// <param name="settings">The Settings.</param>
+        /// <returns>The <see cref="MiniCoverSettings"/> instance so that multiple calls can be chained</returns>
+        public static MiniCoverSettings WithNonFatalThreshold(this MiniCoverSettings settings)
+        {
+            if (settings == null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+
+            settings.NonFatalThreshold = true;
+
+            return settings;
+        }
+        
+        /// <summary>
+        /// Fail the build if coverage is below the threshold. This is the default behavior.
+        /// </summary>
+        /// <param name="settings">The Settings.</param>
+        /// <returns>The <see cref="MiniCoverSettings"/> instance so that multiple calls can be chained</returns>
+        public static MiniCoverSettings WithFatalThreshold(this MiniCoverSettings settings)
+        {
+            if (settings == null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+
+            settings.NonFatalThreshold = false;
+
+            return settings;
+        }
+
+        /// <summary>
         /// Set the report type to generate
         /// </summary>
         /// <param name="settings">The settings.</param>
@@ -175,6 +212,28 @@ namespace Cake.Minicover
             }
 
             settings.ReportPrefix = prefix;
+
+            return settings;
+        }
+
+        /// <summary>
+        /// Set the --workdir for minicover
+        /// </summary>
+        /// <param name="settings">The settings.</param>
+        /// <param name="workdir">The working directory to use for minicover</param>
+        /// <returns>The <see cref="MiniCoverSettings"/> instance so that multiple calls can be chained</returns>
+        /// <example>
+        /// // Genarate an html report in myCoverage-html/ and an xml report in myCoverage.xml
+        /// var settings = new MiniCoverSettings().GenerateReport(ReportType.HTML | ReportType.XML).WithReportPrefix("myCoverage");
+        /// </example>
+        public static MiniCoverSettings WithMiniCoverWorkingDirectory(this MiniCoverSettings settings, DirectoryPath workdir)
+        {
+            if (settings == null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+
+            settings.MiniCoverWorkingDirectory = workdir;
 
             return settings;
         }

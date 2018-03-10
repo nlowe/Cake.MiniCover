@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cake.Minicover
+namespace Cake.MiniCover
 {
     /// <summary>
     /// The type of report to generate
@@ -11,14 +11,19 @@ namespace Cake.Minicover
         /// <summary>
         /// Print coverate results to the console
         /// </summary>
-        CONSOLE = 1,
+        CONSOLE = 1 << 0,
         /// <summary>
         /// Generate an HTML Coverage Report
         /// </summary>
-        HTML = 2,
+        HTML = 1 << 1,
         /// <summary>
         /// Generate an NCover Compatable XML Coverage Report
         /// </summary>
-        XML = 4
+        XML = 1 << 2,
+        /// <summary>
+        /// Generate an OpenCover Compatable XML Coverage Report
+        /// </summary>
+        OPENCOVER = 1 << 3,
+        
     }
 }
