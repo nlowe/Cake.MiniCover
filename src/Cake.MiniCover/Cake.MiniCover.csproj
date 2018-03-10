@@ -1,6 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Nathan Lowe</Authors>
+    <Description>Cake Aliases for https://github.com/lucaslorentz/minicover</Description>
+    <PackageProjectUrl>https://github.com/nlowe/Cake.MiniCover</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/nlowe/Cake.MiniCover/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageTags>cake minicover cake-build cake-contrib</PackageTags>
+    <PackageIconUrl>https://raw.githubusercontent.com/cake-contrib/graphics/a5cf0f881c390650144b2243ae551d5b9f836196/png/cake-contrib-medium.png</PackageIconUrl>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Cake.Common" Version="0.26.0" />

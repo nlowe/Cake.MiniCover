@@ -1,3 +1,7 @@
+#tool "nuget:?package=GitVersion.CommandLine&version=4.0.0-beta0012"
+
+var git = GitVersion();
+
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -81,8 +85,21 @@ Task("Dist")
     {
         Configuration = configuration,
         NoRestore = true,
-        OutputDirectory = "./_dist"
+        OutputDirectory = "./_dist",
+        ArgumentCustomization = args => args.AppendQuoted($"/p:PackageVersion={git.NuGetVersionV2}")
     });
+});
+
+Task("Publish")
+    .IsDependentOn("Dist")
+    .WithCriteria(git.BranchName == "master")
+    .Does(() => 
+{
+    var apiKey = Argument<string>("NugetApiKey");
+    NuGetPush(GetFiles("./_dist/Cake.MiniCover*.nuget").FirstOrDefault(), new NuGetPushSettings
+    {
+        ApiKey = apiKey
+    })
 });
 
 //////////////////////////////////////////////////////////////////////

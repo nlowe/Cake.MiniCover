@@ -97,5 +97,10 @@ fi
 if $SHOW_VERSION; then
     exec mono "$CAKE_EXE" -version
 else
-    exec mono "$CAKE_EXE" $SCRIPT -verbosity=$VERBOSITY -configuration=$CONFIGURATION -target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
+    if [ -f "/usr/lib/libcurl.so.3" ]; then
+        echo "Using libcurl-compat libs"
+        LD_PRELOAD=/usr/lib/libcurl.so.3 exec mono "$CAKE_EXE" $SCRIPT -verbosity=$VERBOSITY -configuration=$CONFIGURATION -target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
+    else
+        exec mono "$CAKE_EXE" $SCRIPT -verbosity=$VERBOSITY -configuration=$CONFIGURATION -target=$TARGET $DRYRUN "${SCRIPT_ARGUMENTS[@]}"
+    fi
 fi
