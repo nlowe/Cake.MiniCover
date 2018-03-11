@@ -1,5 +1,7 @@
 # Cake.MiniCover
 
+[![Build Status](https://travis-ci.org/nlowe/Cake.MiniCover.svg?branch=master)](https://travis-ci.org/nlowe/Cake.MiniCover) [![nuget](https://img.shields.io/nuget/v/Cake.MiniCover.svg)](https://www.nuget.org/packages/Cake.MiniCover/)
+
 A [Cake](https://cakebuild.net) addin for [MiniCover](https://github.com/lucaslorentz/minicover)
 
 ## Usage
