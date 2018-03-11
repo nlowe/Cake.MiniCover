@@ -43,7 +43,7 @@ namespace Cake.MiniCover
 
             if (settings.ReportType.HasFlag(ReportType.OPENCOVER))
             {
-                var suffix = settings.ReportType.HasFlag(ReportType.OPENCOVER) ? "-ncover.xml" : ".xml"; 
+                var suffix = settings.ReportType.HasFlag(ReportType.OPENCOVER) ? "-opencover.xml" : ".xml"; 
 
                 ctx.MiniCoverReport(settings, "opencoverreport", a => a.AppendReportOutput(settings, suffix));
             }
