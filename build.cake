@@ -97,11 +97,20 @@ Task("Publish")
 {
     var apiKey = Argument<string>("NugetApiKey");
     var feed = Argument("NugetFeed", "https://api.nuget.org/v3/index.json");
-    DotNetCoreNuGetPush("./_dist/Cake.MiniCover*.nupkg", new DotNetCoreNuGetPushSettings
+
+    foreach(var nupkg in GetFiles("./_dist/Cake.MiniCover*.nupkg"))
     {
-        Source = feed,
-        ApiKey = apiKey
-    });
+        if (nupkg.FullPath.EndsWith(".symbols.nupkg"))
+        {
+            continue;
+        }
+
+        DotNetCoreNuGetPush(nupkg.FullPath, new DotNetCoreNuGetPushSettings
+        {
+            Source = feed,
+            ApiKey = apiKey
+        });
+    }
 });
 
 //////////////////////////////////////////////////////////////////////

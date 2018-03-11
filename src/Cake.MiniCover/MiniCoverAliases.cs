@@ -16,6 +16,7 @@ namespace Cake.MiniCover
     /// </para>
     /// </summary>
     /// <example>
+    /// <code>
     /// SetMiniCoverToolsProject("./minicover/minicover.csproj");
     /// MiniCover(tool =>
     ///     {
@@ -34,8 +35,10 @@ namespace Cake.MiniCover
     ///         .WithSourcesMatching("./src/**/*.cs")
     ///         .GenerateReport(ReportType.CONSOLE | ReportType.XML)
     /// );
+    /// </code>
     /// </example>
     /// <example>
+    /// <code>
     /// SetMiniCoverToolsProject("./minicover/minicover.csproj");
     /// MiniCoverInstrument(
     ///     new MiniCoverSettings()
@@ -46,6 +49,7 @@ namespace Cake.MiniCover
     /// DotNetCoreTest(...);
     /// MiniCoverUninstrument();
     /// MiniCoverReport(new MiniCoverSettings().GenerateReport(ReportType.CONSOLE | ReportType.XML));
+    /// </code>
     /// </example>
     [CakeAliasCategory("MiniCover")]
     [CakeNamespaceImport("Cake.MiniCover")]
