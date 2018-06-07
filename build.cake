@@ -92,9 +92,14 @@ Task("Dist")
 
 Task("Publish")
     .IsDependentOn("Dist")
-    .WithCriteria(git.BranchName == "master")
     .Does(() => 
 {
+    if (git.BranchName != "master")
+    {
+        Warning($"Not publishing on branch '{git.BranchName}'");
+        return;
+    }
+
     var apiKey = Argument<string>("NugetApiKey");
     var feed = Argument("NugetFeed", "https://api.nuget.org/v3/index.json");
 

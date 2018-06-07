@@ -24,6 +24,13 @@ namespace Cake.MiniCover
         /// Generate an OpenCover Compatable XML Coverage Report
         /// </summary>
         OPENCOVER = 1 << 3,
-        
+        /// <summary>
+        /// Generate a Clover-formatted XML Coverage Report
+        /// </summary>
+        CLOVER = 1 << 4,
+        /// <summary>
+        /// Generate a Coveralls-formatted JSON Coverage Report
+        /// </summary>
+        COVERALLS = 1 << 5,
     }
 }
