@@ -49,7 +49,7 @@ namespace Cake.MiniCover.Settings
         /// <summary>
         /// The prefix for html and xml reports
         /// </summary>
-        public string ReportPrefix { get; set; } = "coverage";
+        public string ReportPrefix { get; set; } = string.Empty;
 
         /// <summary>
         /// Coverage percentage below which the build will fail

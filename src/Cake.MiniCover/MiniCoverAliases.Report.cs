@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Cake.Common.Diagnostics;
 using Cake.Common.Tools.DotNetCore;
 using Cake.Core;
 using Cake.Core.Annotations;
@@ -9,6 +11,17 @@ namespace Cake.MiniCover
 {
     public static partial class MiniCoverAliases
     {
+        private static readonly Dictionary<ReportType, Action<MiniCoverSettings,ProcessArgumentBuilder>> AdditionalArguments = new Dictionary<ReportType, Action<MiniCoverSettings,ProcessArgumentBuilder>>
+        {
+            { 
+                ReportType.COVERALLS, 
+                (s, a) => 
+                {
+                    
+                }
+            }
+        };
+
         /// <summary>
         /// Generate one or more minicover reports
         /// </summary>
@@ -23,29 +36,29 @@ namespace Cake.MiniCover
             }
             
             ctx.EnsureToolsProjectLocated();
-            
-            if (settings.ReportType.HasFlag(ReportType.CONSOLE))
-            {
-                ctx.MiniCoverReport(settings, "report");
-            }
 
-            if (settings.ReportType.HasFlag(ReportType.HTML))
+            foreach(Enum flag in Enum.GetValues(typeof(ReportType)))
             {
-                ctx.MiniCoverReport(settings, "htmlreport", a => a.AppendReportOutput(settings));
-            }
+                if(settings.ReportType.HasFlag(flag))
+                {
+                    var subcommand = typeof(ReportType).GetMember(flag.ToString())[0].GetCustomAttributes(typeof(ReportCommandAttribute), false)[0] as ReportCommandAttribute;
 
-            if (settings.ReportType.HasFlag(ReportType.XML))
-            {
-                var suffix = settings.ReportType.HasFlag(ReportType.OPENCOVER) ? "-ncover.xml" : ".xml"; 
-                
-                ctx.MiniCoverReport(settings, "xmlreport", a => a.AppendReportOutput(settings, suffix));
-            }
+                    ctx.MiniCoverReport(settings, subcommand.CommandName, a => 
+                    {
+                        a.AppendReportOutput(settings, subcommand.OutputName ?? string.Empty);
 
-            if (settings.ReportType.HasFlag(ReportType.OPENCOVER))
-            {
-                var suffix = settings.ReportType.HasFlag(ReportType.OPENCOVER) ? "-opencover.xml" : ".xml"; 
+                        if (subcommand.SupportsThreshold)
+                        {
+                            a.Append("--threshold");
+                            a.Append(settings.FailureThreshold.ToString("0.00"));
+                        }
 
-                ctx.MiniCoverReport(settings, "opencoverreport", a => a.AppendReportOutput(settings, suffix));
+                        if(AdditionalArguments.TryGetValue((ReportType) flag, out var additionalArgs))
+                        {
+                            additionalArgs.Invoke(settings, a);
+                        }
+                    });
+                }
             }
         }
 
@@ -98,9 +111,6 @@ namespace Cake.MiniCover
             ctx.EnsureToolsProjectLocated();
             
             var args = new ProcessArgumentBuilder().AppendReportCommand(reportName, settings);
-
-            args.Append("--threshold");
-            args.Append(settings.FailureThreshold.ToString("0.00"));
             
             additionalArgs?.Invoke(args);
             
@@ -108,12 +118,10 @@ namespace Cake.MiniCover
             {
                 ctx.DotNetCoreTool(MiniCoverSettings.MiniCoverToolsProject, "minicover", args);
             }
-            catch(Exception)
+            catch(Exception ex) when (settings.NonFatalThreshold)
             {
-                if(!settings.NonFatalThreshold)
-                {
-                    throw;
-                }
+                // TODO: Better detection of when failure is actually due to coverage threshold
+                ctx.Debug("Report generation failed silently: {0}", ex);
             }
         }
     }
