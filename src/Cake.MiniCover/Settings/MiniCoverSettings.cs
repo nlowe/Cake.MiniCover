@@ -5,7 +5,7 @@ using Cake.Core.IO;
 namespace Cake.MiniCover.Settings
 {
     /// <summary>
-    /// Contains settings used by <see cref="MiniCoverRunner"/>.
+    /// Contains settings used by <see cref="MiniCoverAliases"/>.
     /// </summary>
     public sealed class MiniCoverSettings : DotNetCoreSettings
     {
