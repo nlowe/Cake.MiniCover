@@ -94,7 +94,7 @@ Task("Publish")
     .IsDependentOn("Dist")
     .Does(() => 
 {
-    if (git.BranchName != "master")
+    if (git.BranchName != "master" && git.BranchName != "next")
     {
         Warning($"Not publishing on branch '{git.BranchName}'");
         return;
