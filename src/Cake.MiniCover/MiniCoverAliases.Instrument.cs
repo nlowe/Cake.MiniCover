@@ -32,15 +32,10 @@ namespace Cake.MiniCover
             
             ctx.EnsureToolsProjectLocated();
             
-            var args = new ProcessArgumentBuilder().AppendCommonArgs("instrument", settings);
+            var args = new ProcessArgumentBuilder().AppendMiniCoverCommand("instrument", settings);
                 
             args.AppendGlobPatterns(settings);
-
-            if (!string.IsNullOrEmpty(settings.HitsFileName))
-            {
-                args.Append("--hits-file");
-                args.AppendQuoted(settings.HitsFileName);
-            }
+            args.AppendHitsFile(settings);
             
             ctx.DotNetCoreTool(MiniCoverSettings.MiniCoverToolsProject, "minicover", args);
         }

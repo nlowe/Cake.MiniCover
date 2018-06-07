@@ -39,7 +39,7 @@ namespace Cake.MiniCover
             ctx.DotNetCoreTool(
                 MiniCoverSettings.MiniCoverToolsProject,
                 "minicover", 
-                new ProcessArgumentBuilder().AppendCommonArgs("uninstrument", settings)
+                new ProcessArgumentBuilder().AppendMiniCoverCommand("uninstrument", settings)
             );
         }
     }

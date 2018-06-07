@@ -97,7 +97,7 @@ namespace Cake.MiniCover
             
             ctx.EnsureToolsProjectLocated();
             
-            var args = new ProcessArgumentBuilder().AppendCommonArgs(reportName, settings);
+            var args = new ProcessArgumentBuilder().AppendReportCommand(reportName, settings);
 
             args.Append("--threshold");
             args.Append(settings.FailureThreshold.ToString("0.00"));
