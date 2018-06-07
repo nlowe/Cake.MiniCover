@@ -237,5 +237,37 @@ namespace Cake.MiniCover.Settings
 
             return settings;
         }
+
+        /// <summary>
+        /// Set settings for coveralls report generation
+        /// </summary>
+        /// <param name="settings">The settings.</param>
+        /// <param name="coveralls">Settings for coveralls</param>
+        /// <returns>The <see cref="MiniCoverSettings"/> instance so that multiple calls can be chained</returns>
+        public static MiniCoverSettings WithCoverallsSettings(this MiniCoverSettings settings, CoverallsSettings coveralls) =>
+            settings.WithCoverallsSettings((Action<CoverallsSettings>)null);
+
+        /// <summary>
+        /// Set settings for coveralls report generation
+        /// </summary>
+        /// <param name="settings">The settings.</param>
+        /// <param name="coveralls">Settings for coveralls</param>
+        /// <returns>The <see cref="MiniCoverSettings"/> instance so that multiple calls can be chained</returns>
+        /// <example>
+        /// // Publish coverage to Coveralls from travis-ci
+        /// var settings = new MiniCoverSettings().GenerateReport(ReportType.COVERALLS).WithCoverallsSettings(c => c.UseTravisDefaults());
+        /// </example>
+        public static MiniCoverSettings WithCoverallsSettings(this MiniCoverSettings settings, Action<CoverallsSettings> coveralls)
+        {
+            if (settings == null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+
+            settings.Coveralls = new CoverallsSettings();
+            coveralls.Invoke(settings.Coveralls);
+
+            return settings;
+        }
     }
 }

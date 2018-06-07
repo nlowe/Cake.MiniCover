@@ -17,7 +17,70 @@ namespace Cake.MiniCover
                 ReportType.COVERALLS, 
                 (s, a) => 
                 {
-                    
+                    if(!string.IsNullOrEmpty(s.Coveralls?.RootPath))
+                    {
+                        a.Append("--root-path").AppendQuoted(s.Coveralls.RootPath);
+                    }
+
+                    if(!string.IsNullOrEmpty(s.Coveralls?.ServiceJobId))
+                    {
+                        a.Append("--service-job-id").AppendQuoted(s.Coveralls.ServiceJobId);
+                    }
+
+                    if(!string.IsNullOrEmpty(s.Coveralls?.ServiceName))
+                    {
+                        a.Append("--service-name").AppendQuoted(s.Coveralls.ServiceName);
+                    }
+
+                    if(!string.IsNullOrEmpty(s.Coveralls?.RepoToken))
+                    {
+                        a.Append("--repo-token").AppendQuotedSecret(s.Coveralls.RepoToken);
+                    }
+
+                    if(!string.IsNullOrEmpty(s.Coveralls?.CommitHash))
+                    {
+                        a.Append("--commit").AppendQuoted(s.Coveralls.CommitHash);
+                    }
+
+                    if(!string.IsNullOrEmpty(s.Coveralls?.CommitMessage))
+                    {
+                        a.Append("--commit-message").AppendQuoted(s.Coveralls.CommitMessage);
+                    }
+
+                    if(!string.IsNullOrEmpty(s.Coveralls?.CommitAuthorName))
+                    {
+                        a.Append("--commit-author-name").AppendQuoted(s.Coveralls.CommitAuthorName);
+                    }
+
+                    if(!string.IsNullOrEmpty(s.Coveralls?.CommitAuthorEmail))
+                    {
+                        a.Append("--commit-author-email").AppendQuoted(s.Coveralls.CommitAuthorEmail);
+                    }
+
+                    if(!string.IsNullOrEmpty(s.Coveralls?.CommitterName))
+                    {
+                        a.Append("--commit-committer-name").AppendQuoted(s.Coveralls.CommitterName);
+                    }
+
+                    if(!string.IsNullOrEmpty(s.Coveralls?.CommitterEmail))
+                    {
+                        a.Append("--commit-committer-email").AppendQuoted(s.Coveralls.CommitterEmail);
+                    }
+
+                    if(!string.IsNullOrEmpty(s.Coveralls?.Branch))
+                    {
+                        a.Append("--branch").AppendQuoted(s.Coveralls.Branch);
+                    }
+
+                    if(!string.IsNullOrEmpty(s.Coveralls?.Remote))
+                    {
+                        a.Append("--remote").AppendQuoted(s.Coveralls.Remote);
+                    }
+
+                    if(!string.IsNullOrEmpty(s.Coveralls?.RemoteUrl))
+                    {
+                        a.Append("--remote-url").AppendQuoted(s.Coveralls.RemoteUrl);
+                    }
                 }
             }
         };

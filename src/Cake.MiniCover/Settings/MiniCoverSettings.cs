@@ -64,6 +64,11 @@ namespace Cake.MiniCover.Settings
         /// <summary>
         /// The working directory for minicover (corresponds to the --workdir option)
         /// </summary>
-        public DirectoryPath MiniCoverWorkingDirectory {get; set;} = "../";        
+        public DirectoryPath MiniCoverWorkingDirectory {get; set;} = "../";
+
+        /// <summary>
+        /// Settings for the <see cref="Cake.MiniCover.ReportType.COVERALLS"/> report type
+        /// </summary>
+        public CoverallsSettings Coveralls {get; set; } = new CoverallsSettings();
     }
 }
