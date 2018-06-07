@@ -112,6 +112,18 @@ Task("Publish")
     .IsDependentOn("Dist")
     .Does(() => 
 {
+    if (!TravisCI.IsRunningOnTravisCI)
+    {
+        Warning("Packages can only be published from TravisCI");
+        return;
+    }
+
+    if (!string.IsNullOrEmpty(TravisCI.Environment.Repository.PullRequest))
+    {
+        Warning("Not publishing packages for a pull request");
+        return;
+    }
+
     if (branch != "master" && branch != "next")
     {
         Warning($"Not publishing on branch '{branch}'");
