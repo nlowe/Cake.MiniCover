@@ -6,8 +6,11 @@ namespace Cake.MiniCover
 {
     internal static class ProcessArgumentBuilderExtensions
     {
-        internal static ProcessArgumentBuilder AppendCommonArgs(this ProcessArgumentBuilder builder, string subcommand,
-            MiniCoverSettings settings)
+        internal static ProcessArgumentBuilder AppendMiniCoverCommand(
+            this ProcessArgumentBuilder builder,
+            string subcommand,
+            MiniCoverSettings settings
+        )
         {
             builder.Append(subcommand);
 
@@ -16,6 +19,28 @@ namespace Cake.MiniCover
                 builder.Append("--workdir");
                 builder.AppendQuoted(settings.MiniCoverWorkingDirectory.FullPath);
             }
+
+            return builder;
+        }
+
+        internal static ProcessArgumentBuilder AppendHitsFile(this ProcessArgumentBuilder builder, MiniCoverSettings settings)
+        {
+            if (!string.IsNullOrEmpty(settings.HitsFileName))
+            {
+                builder.Append("--hits-file");
+                builder.AppendQuoted(settings.HitsFileName);
+            }
+
+            return builder;
+        }
+
+        internal static ProcessArgumentBuilder AppendReportCommand(
+            this ProcessArgumentBuilder builder,
+            string subcommand,
+            MiniCoverSettings settings
+        )
+        {
+            builder.AppendMiniCoverCommand(subcommand, settings);
             
             if (!string.IsNullOrEmpty(settings.CoverageFileName))
             {

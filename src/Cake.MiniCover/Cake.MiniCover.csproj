@@ -11,11 +11,11 @@
     <PackageProjectUrl>https://github.com/nlowe/Cake.MiniCover</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/nlowe/Cake.MiniCover/blob/master/LICENSE</PackageLicenseUrl>
     <PackageTags>cake minicover cake-build cake-contrib</PackageTags>
-    <PackageIconUrl>https://raw.githubusercontent.com/cake-contrib/graphics/a5cf0f881c390650144b2243ae551d5b9f836196/png/cake-contrib-medium.png</PackageIconUrl>
+    <PackageIconUrl>https://cdn.rawgit.com/cake-contrib/graphics/a5cf0f881c390650144b2243ae551d5b9f836196/png/cake-contrib-medium.png</PackageIconUrl>
     <IncludeSymbols>true</IncludeSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Cake.Common" Version="0.26.0" />
-    <PackageReference Include="Cake.Core" Version="0.26.0" />
+    <PackageReference Include="Cake.Common" Version="0.28.0" PrivateAssets="All" />
+    <PackageReference Include="Cake.Core" Version="0.28.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

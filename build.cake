@@ -1,7 +1,3 @@
-#tool "nuget:?package=GitVersion.CommandLine&version=4.0.0-beta0012"
-
-var git = GitVersion();
-
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -10,6 +6,21 @@ const string SOLUTION = "./Cake.MiniCover.sln";
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
+
+IEnumerable<string> gitOutput;
+if (StartProcess("git", new ProcessSettings { 
+        Arguments = "rev-parse --abbrev-ref HEAD",
+        RedirectStandardOutput = true
+    },
+    out gitOutput
+) != 0)
+{
+    throw new Exception("Failed to get the git branch");
+}
+
+var branch = TravisCI.IsRunningOnTravisCI ? 
+    TravisCI.Environment.Build.Branch : gitOutput.FirstOrDefault();
+
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -80,21 +91,45 @@ Task("Dist")
     .IsDependentOn("Test")
     .Does(() => 
 {
+    var version = System.IO.File.ReadAllText(new FilePath("./version.txt").FullPath).Trim();
+
+    if(branch == "next")
+    {
+        version += $"-next{DateTime.Now.ToString("yyyMMddhhmmss")}";
+    }
+
     EnsureDirectoryExists("./_dist");
     DotNetCorePack("./src/Cake.MiniCover/Cake.MiniCover.csproj", new DotNetCorePackSettings
     {
         Configuration = configuration,
         NoRestore = true,
         OutputDirectory = "./_dist",
-        ArgumentCustomization = args => args.AppendQuoted($"/p:PackageVersion={git.NuGetVersionV2}")
+        ArgumentCustomization = args => args.AppendQuoted($"/p:PackageVersion={version}")
     });
 });
 
 Task("Publish")
     .IsDependentOn("Dist")
-    .WithCriteria(git.BranchName == "master")
     .Does(() => 
 {
+    if (!TravisCI.IsRunningOnTravisCI)
+    {
+        Warning("Packages can only be published from TravisCI");
+        return;
+    }
+
+    if (!string.IsNullOrEmpty(TravisCI.Environment.Repository.PullRequest))
+    {
+        Warning("Not publishing packages for a pull request");
+        return;
+    }
+
+    if (branch != "master" && branch != "next")
+    {
+        Warning($"Not publishing on branch '{branch}'");
+        return;
+    }
+
     var apiKey = Argument<string>("NugetApiKey");
     var feed = Argument("NugetFeed", "https://api.nuget.org/v3/index.json");
 

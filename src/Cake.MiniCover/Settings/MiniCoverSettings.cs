@@ -5,7 +5,7 @@ using Cake.Core.IO;
 namespace Cake.MiniCover.Settings
 {
     /// <summary>
-    /// Contains settings used by <see cref="MiniCoverRunner"/>.
+    /// Contains settings used by <see cref="MiniCoverAliases"/>.
     /// </summary>
     public sealed class MiniCoverSettings : DotNetCoreSettings
     {
@@ -49,7 +49,7 @@ namespace Cake.MiniCover.Settings
         /// <summary>
         /// The prefix for html and xml reports
         /// </summary>
-        public string ReportPrefix { get; set; } = "coverage";
+        public string ReportPrefix { get; set; } = string.Empty;
 
         /// <summary>
         /// Coverage percentage below which the build will fail
@@ -64,6 +64,11 @@ namespace Cake.MiniCover.Settings
         /// <summary>
         /// The working directory for minicover (corresponds to the --workdir option)
         /// </summary>
-        public DirectoryPath MiniCoverWorkingDirectory {get; set;} = "../";        
+        public DirectoryPath MiniCoverWorkingDirectory {get; set;} = "../";
+
+        /// <summary>
+        /// Settings for the <see cref="Cake.MiniCover.ReportType.COVERALLS"/> report type
+        /// </summary>
+        public CoverallsSettings Coveralls {get; set; } = new CoverallsSettings();
     }
 }

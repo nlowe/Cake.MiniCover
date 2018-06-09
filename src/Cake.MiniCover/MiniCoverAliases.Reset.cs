@@ -31,7 +31,7 @@ namespace Cake.MiniCover
             ctx.DotNetCoreTool(
                 MiniCoverSettings.MiniCoverToolsProject,
                 "minicover", 
-                new ProcessArgumentBuilder().AppendCommonArgs("reset", settings)
+                new ProcessArgumentBuilder().AppendMiniCoverCommand("reset", settings)
             );
         }
     }
