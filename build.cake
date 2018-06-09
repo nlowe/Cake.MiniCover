@@ -118,7 +118,8 @@ Task("Publish")
         return;
     }
 
-    if (!string.IsNullOrEmpty(TravisCI.Environment.Repository.PullRequest))
+    var pr = TravisCI.Environment.Repository.PullRequest ?? "false";
+    if (pr != "false")
     {
         Warning("Not publishing packages for a pull request");
         return;
