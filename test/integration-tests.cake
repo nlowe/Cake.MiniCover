@@ -61,8 +61,15 @@ Task("Test::Composite")
         new MiniCoverSettings()
             .WithAssembliesMatching("./test/**/*.dll")
             .WithSourcesMatching("./src/**/*.cs")
-            .GenerateReport(ReportType.CONSOLE | ReportType.XML)
-            .WithNonFatalThreshold()
+            .WithThreshold(0)
+            .GenerateReport(
+                ReportType.CONSOLE |
+                ReportType.HTML |
+                ReportType.XML |
+                ReportType.OPENCOVER |
+                ReportType.CLOVER
+                // Can't test coveralls as it tries to do an upload
+            )
     );
 });
 

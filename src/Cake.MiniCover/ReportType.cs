@@ -42,7 +42,7 @@ namespace Cake.MiniCover
         /// <summary>
         /// Generate an OpenCover Compatable XML Coverage Report
         /// </summary>
-        [ReportCommand("opencoverreport", outputName: "opencovercoverage.xml", supportsThreshold: false)]
+        [ReportCommand("opencoverreport", outputName: "opencovercoverage.xml")]
         OPENCOVER = 1 << 3,
         /// <summary>
         /// Generate a Clover-formatted XML Coverage Report
