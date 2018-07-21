@@ -190,7 +190,7 @@ namespace Cake.MiniCover.Settings
                 throw new InvalidOperationException("Not running on travis-ci");
             }
 
-            settings.WithServiceName(isTravisPro ? "travis-pro" : "travvis-ci");
+            settings.WithServiceName(isTravisPro ? "travis-pro" : "travis-ci");
             settings.WithServiceJobId(Environment.GetEnvironmentVariable("TRAVIS_JOB_ID"));
 
             return settings;
