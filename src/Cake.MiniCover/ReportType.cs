@@ -52,7 +52,7 @@ namespace Cake.MiniCover
         /// <summary>
         /// Generate a Coveralls-formatted JSON Coverage Report
         /// </summary>
-        [ReportCommand("coverallsreport", outputName: "coveralls.json")]
+        [ReportCommand("coverallsreport", outputName: "coveralls.json", supportsThreshold: false)]
         COVERALLS = 1 << 5,
     }
 }
